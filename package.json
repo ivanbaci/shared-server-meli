@@ -20,7 +20,10 @@
   },
   "homepage": "https://github.com/ivanbaci/shared-server-meli#readme",
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "json-rules-engine": "^2.3.0",
+    "node-rules": "^4.0.2",
+    "nools": "^0.4.4"
   },
   "keywords": [
     "node",
