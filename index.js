@@ -16,7 +16,7 @@ bookRouter.route('/books')
 app.use('/api', bookRouter);
 
 app.get('/', function (req, res) {
-    res.send('Hello world!');
+    res.send('Hello world! Travis lcdtm');
 })
 
 app.listen(port, function () {
