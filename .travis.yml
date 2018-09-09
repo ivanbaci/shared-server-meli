@@ -6,5 +6,4 @@ install:
 after_success:
   - npm run coveralls
 script:
-  - ci_env=`bash <(curl -s https://codecov.io/env)`
-  - mkdir coverage
+  - cat 'hello world'
