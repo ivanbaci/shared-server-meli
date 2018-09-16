@@ -8,8 +8,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "mocha",
-    "report-coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
