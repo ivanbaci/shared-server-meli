@@ -23,6 +23,7 @@
   "dependencies": {
     "codecov": "^3.1.0",
     "express": "^4.16.3",
+    "istanbul": "^0.4.5",
     "json-rules-engine": "^2.3.0",
     "mocha": "^5.2.0",
     "node-rules": "^4.0.2",
