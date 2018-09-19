@@ -28,7 +28,8 @@
     "mocha": "^5.2.0",
     "node-rules": "^4.0.2",
     "nodemon": "^1.18.4",
-    "nools": "^0.4.4"
+    "nools": "^0.4.4",
+    "pg": "^7.4.3"
   },
   "keywords": [
     "node",
