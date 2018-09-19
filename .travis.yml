@@ -12,5 +12,5 @@ notifications:
   email: false
 deploy:
   provider: heroku
-  my_api_key: 12345
+  api_key: Ber$uit18
   app: melisharedserver
