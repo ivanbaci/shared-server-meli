@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 
 const tokenRouter = require("./api/routes/token");
 const serverRouter = require("./api/routes/server");
+const paymentRouter = require("./api/routes/payment");
+const deliveryRouter = require("./api/routes/delivery");
+const trackingRouter = require("./api/routes/tracking");
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,6 +33,12 @@ app.use((req, res, next) => {
 app.use("/token", tokenRouter);
 
 app.use("/servers", serverRouter);
+
+app.use("/payments", paymentRouter);
+
+app.use("/deliveries", deliveryRouter);
+
+app.use("/tracking", trackingRouter);
 
 // Handle routes that are not supported in the api
 app.use((req, res, next) => {

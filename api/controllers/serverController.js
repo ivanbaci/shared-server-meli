@@ -1,23 +1,23 @@
-function getServers(req, res) {
+exports.getServers = (req, res) => {
 	//TODO: return servers
-}
+};
 
-function saveServer(req, res) {
+exports.saveServer = (req, res) => {
 	//TODO: save server return ok
-}
+};
 
-function getServerById(req, res) {
+exports.getServerById = (req, res) => {
 	//TODO:
-}
+};
 
-function updateServer(req, res) {
+exports.updateServer = (req, res) => {
 	//TODO:
-}
+};
 
-function resetServerToken(req, res) {
+exports.resetServerToken = (req, res) => {
 	//TODO:
-}
+};
 
-function deleteServer(req, res) {
+exports.deleteServer = (req, res) => {
 	//TODO:
-}
+};
