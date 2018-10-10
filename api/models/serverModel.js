@@ -23,3 +23,5 @@ const Server = sequelize.define("server", {
 		type: Sequelize.DATE
 	}
 });
+
+module.exports = Server;

@@ -1,15 +1,30 @@
 const Server = require("../models/serverModel");
 
 exports.getServers = (req, res) => {
-	//TODO: return servers
+	Server.findAll().then(servers => {
+		res.json(servers);
+	});
 };
 
 exports.saveServer = (req, res) => {
-	//TODO: save server return ok
+	Server.sync({ force: false }).then(() => {
+		return Server.create({
+			id: "prueba2",
+			_rev: "chucu",
+			createdBy: "ivan",
+			name: "appserver",
+			lastConnection: Date.now()
+		});
+	});
+	res.json({
+		message: "ok"
+	});
 };
 
 exports.getServerById = (req, res) => {
-	//TODO:
+	Server.findById("prueba").then(server => {
+		res.json(server);
+	});
 };
 
 exports.updateServer = (req, res) => {

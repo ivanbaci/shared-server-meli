@@ -32,11 +32,11 @@ app.use((req, res, next) => {
 // Routes which should hanlde requests
 app.use("/token", tokenRouter);
 
-app.use("/servers", serverRouter);
+app.use("/server", serverRouter);
 
-app.use("/payments", paymentRouter);
+app.use("/payment", paymentRouter);
 
-app.use("/deliveries", deliveryRouter);
+app.use("/delivery", deliveryRouter);
 
 app.use("/tracking", trackingRouter);
 
