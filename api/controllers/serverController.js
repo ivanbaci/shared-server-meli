@@ -1,3 +1,5 @@
+const Server = require("../models/serverModel");
+
 exports.getServers = (req, res) => {
 	//TODO: return servers
 };
