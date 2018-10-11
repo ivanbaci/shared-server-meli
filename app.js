@@ -9,8 +9,6 @@ const paymentRouter = require("./api/routes/payment");
 const deliveryRouter = require("./api/routes/delivery");
 const trackingRouter = require("./api/routes/tracking");
 
-//TODO: agregar firebase
-
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
