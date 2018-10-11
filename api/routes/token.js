@@ -1,7 +1,7 @@
 const express = require("express");
 var router = express.Router();
 
-const tokenController = require("../controllers/tokenController");
+const tokenController = require("../controllers/token");
 
 router.get("/", tokenController.generateToken);
 

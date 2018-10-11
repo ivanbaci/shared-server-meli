@@ -1,7 +1,7 @@
 const express = require("express");
 var router = express.Router();
 
-const serverController = require("../controllers/serverController");
+const serverController = require("../controllers/server");
 
 router.get("/", serverController.getServers);
 
