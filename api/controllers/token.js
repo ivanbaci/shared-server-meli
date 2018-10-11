@@ -17,7 +17,6 @@ admin.initializeApp({
 }; */
 
 exports.generateToken = (req, res) => {
-	console.log(req.body.username);
 	admin
 		.auth()
 		.getUserByEmail(req.body.username)
@@ -32,6 +31,8 @@ exports.generateToken = (req, res) => {
 				},
 				userRecord
 			});
+		})
+		.catch(err => {
+			res.status(401).json(err);
 		});
-	//TODO: manejar errores
 };
