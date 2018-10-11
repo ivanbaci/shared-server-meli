@@ -1,34 +1,37 @@
-const crypto = require("crypto");
-const moment = require("moment");
+const admin = require("firebase-admin");
+const serviceAccount = require("../../serviceAccountKey.json");
+//const Joi = require("joi");
 
-function validateUser(req, res) {
-	console.log("validando user");
-}
+admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount),
+	databaseURL: "https://shared-server-d9ab0.firebaseio.com"
+});
 
-function responseToken(res) {
-	crypto.randomBytes(48, function(err, buffer) {
-		if (err) {
-			res.status(500).json({
-				message: "Error generando el token"
-			});
-		}
-		let newToken = buffer.toString("hex");
-
-		let localDate = moment().local();
-		localDate.add(2, "h");
-		let date = localDate.format("YYYY-MM-DD HH:mm:ss");
-
-		//TODO: agregar metadata
-		res.json({
-			token: {
-				expiresAt: date,
-				token: newToken
-			}
-		});
-	});
-}
+/* exports.validateRequest = {
+	body: {
+		username: Joi.string()
+			.email()
+			.required(),
+		password: Joi.string().required()
+	}
+}; */
 
 exports.generateToken = (req, res) => {
-	validateUser(req);
-	responseToken(res);
+	console.log(req.body.username);
+	admin
+		.auth()
+		.getUserByEmail(req.body.username)
+		.then(userRecord => {
+			res.status(201).json({
+				metadata: {
+					version: "1"
+				},
+				token: {
+					expiresAt: userRecord.tokensValidAfterTime,
+					token: userRecord.uid
+				},
+				userRecord
+			});
+		});
+	//TODO: manejar errores
 };
