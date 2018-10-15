@@ -26,6 +26,7 @@
 		"express-validation": "^1.0.2",
 		"firebase-admin": "^6.0.0",
 		"istanbul": "^0.4.5",
+		"joi": "^13.7.0",
 		"json-rules-engine": "^2.3.0",
 		"mocha": "^5.2.0",
 		"moment": "^2.22.2",

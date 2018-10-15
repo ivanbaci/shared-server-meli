@@ -1,9 +1,13 @@
 const Server = require("../models/server");
 
 exports.getServers = (req, res) => {
-	Server.findAll().then(servers => {
-		res.json(servers);
-	}); //TODO: manejar errores
+	Server.findAll()
+		.then(servers => {
+			res.json(servers);
+		})
+		.catch(err => {
+			res.status(500).json(err);
+		});
 };
 
 exports.saveServer = (req, res) => {

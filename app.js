@@ -48,12 +48,9 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+	console.log(err);
 	res.status(err.status || 500);
-	res.json({
-		error: {
-			message: err.message
-		}
-	});
+	res.json(err);
 });
 
 module.exports = app;
