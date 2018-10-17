@@ -1,17 +1,45 @@
 const Server = require("../models/server");
+const Joi = require("joi");
 
 exports.getServers = (req, res) => {
+	//TODO: manejar unauthorized(401)
 	Server.findAll()
 		.then(servers => {
 			res.json(servers);
 		})
 		.catch(err => {
-			res.status(500).json(err);
+			res.status(500).json({
+				code: 0,
+				message: err.errors.map(e => e.message)
+			});
+		});
+};
+
+const serverSchema = Joi.object().keys({
+	id: Joi.string().required(),
+	_rev: Joi.string().required(),
+	createdBy: Joi.string().required(),
+	createdTime: Joi.date(),
+	name: Joi.string().required(),
+	lastConnection: Joi.date()
+});
+
+exports.validateRequest = (req, res, next) => {
+	serverSchema
+		.validate(req.body, { abortEarly: false }) //abortEarly - collect all errors not just the first one
+		.then(() => {
+			next();
+		})
+		.catch(validationError => {
+			const errorMessage = validationError.details.map(d => d.message);
+			res.status(400).json({
+				code: 0,
+				message: errorMessage
+			});
 		});
 };
 
 exports.saveServer = (req, res) => {
-	//TODO: validate req
 	Server.sync({ force: false })
 		.then(() => {
 			return Server.create({
@@ -21,7 +49,7 @@ exports.saveServer = (req, res) => {
 				name: req.body.name,
 				lastConnection: Date.now() //TODO: ver como mantener esto
 			});
-		}) //TODO: manejar error en la creacion de la db
+		})
 		.then(newServer => {
 			res.status(201).json({
 				metadata: {
@@ -29,29 +57,64 @@ exports.saveServer = (req, res) => {
 				},
 				newServer
 			});
+		})
+		.catch(err => {
+			res.status(500).json({
+				code: 0,
+				message: err.errors.map(e => e.message)
+			});
 		});
 };
 
 exports.getServerById = (req, res) => {
-	Server.findById(req.params.id).then(server => {
-		res.json(server);
-	});
-	//TODO: manejar errores
+	//TODO: manejar 401
+	Server.findById(req.params.id)
+		.then(server => {
+			if (!server) {
+				res.status(404).json({
+					code: 0,
+					message: "Servidor inexistente"
+				});
+				return;
+			}
+			res.json(server);
+		})
+		.catch(err => {
+			console.log(err);
+			res.status(500).json({
+				code: 0,
+				message: err.errors.map(e => e.message)
+			});
+		});
 };
 
 exports.updateServer = (req, res) => {
 	Server.update(
 		{ _rev: req.body._rev, name: req.body.name },
 		{ returning: true, where: { id: req.params.id } }
-	).then(([rowsUpdate, [updatedServer]]) => {
-		res.json({
-			metadata: {
-				version: "2" //TODO: contador en version
-			},
-			updatedServer
+	)
+		.then(([rowsUpdate, [updatedServer]]) => {
+			if (rowsUpdate === 0) {
+				res.status(404).json({
+					code: 0,
+					message: "No existe el recurso solicitado"
+				});
+				return;
+			}
+			res.json({
+				metadata: {
+					version: "1"
+				},
+				updatedServer
+			});
+		})
+		.catch(err => {
+			res.status(500).json({
+				code: 0,
+				message: err.errors.map(e => e.message)
+			});
 		});
-	});
-	//TODO: manejar errores
+	//TODO: manejar error 401 y 409
 };
 
 exports.resetServerToken = (req, res) => {
@@ -59,8 +122,22 @@ exports.resetServerToken = (req, res) => {
 };
 
 exports.deleteServer = (req, res) => {
-	Server.destroy({ where: { id: req.params.id } }).then(() => {
-		res.status(204).send();
-	});
-	//TODO: manejar errores
+	Server.destroy({ where: { id: req.params.id } })
+		.then(rowsDestroyed => {
+			if (rowsDestroyed === 0) {
+				res.status(404).json({
+					code: 0,
+					message: "No existe el recurso solicitado"
+				});
+				return;
+			}
+			res.status(204).send();
+		})
+		.catch(err => {
+			res.status(500).json({
+				code: 0,
+				message: err.errors.map(e => e.message)
+			});
+		});
+	//TODO: manejar error 401
 };

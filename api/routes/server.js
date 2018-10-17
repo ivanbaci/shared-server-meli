@@ -5,11 +5,15 @@ const serverController = require("../controllers/server");
 
 router.get("/", serverController.getServers);
 
-router.post("/", serverController.saveServer);
+router.post("/", serverController.validateRequest, serverController.saveServer);
 
 router.get("/:id", serverController.getServerById);
 
-router.put("/:id", serverController.updateServer);
+router.put(
+	"/:id",
+	serverController.validateRequest,
+	serverController.updateServer
+);
 
 router.post("/:id", serverController.resetServerToken);
 

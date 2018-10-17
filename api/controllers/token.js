@@ -21,7 +21,9 @@ const tokenSchema = Joi.object().keys({
 exports.validateRequest = (req, res, next) => {
 	tokenSchema
 		.validate(req.body, { abortEarly: false }) //abortEarly - collect all errors not just the first one
-		.then(next())
+		.then(() => {
+			next();
+		})
 		.catch(validationError => {
 			const errorMessage = validationError.details.map(d => d.message);
 			res.status(400).json({
