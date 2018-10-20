@@ -1,11 +1,20 @@
-const admin = require("firebase-admin");
+const firebase = require("firebase");
 const serviceAccount = require("../../serviceAccountKey.json");
 const Joi = require("joi");
 
-admin.initializeApp({
+/* admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
 	databaseURL: "https://shared-server-d9ab0.firebaseio.com"
-});
+}); */
+var config = {
+	apiKey: "AIzaSyAZjcNnV6A7snkqaFMeHAuXeccVRyi6VBA",
+	authDomain: "shared-server-d9ab0.firebaseapp.com",
+	databaseURL: "https://shared-server-d9ab0.firebaseio.com",
+	projectId: "shared-server-d9ab0",
+	storageBucket: "shared-server-d9ab0.appspot.com",
+	messagingSenderId: "13434219476"
+};
+firebase.initializeApp(config);
 
 const tokenSchema = Joi.object().keys({
 	username: Joi.string()
@@ -34,19 +43,20 @@ exports.validateRequest = (req, res, next) => {
 };
 
 exports.generateToken = (req, res) => {
-	admin
+	firebase
 		.auth()
-		.getUserByEmail(req.body.username)
+		.signInWithEmailAndPassword(req.body.username, req.body.password)
 		.then(userRecord => {
+			console.log(userRecord.user.getIdToken);
 			res.status(201).json({
 				metadata: {
 					version: "1"
 				},
 				token: {
-					expiresAt: userRecord.tokensValidAfterTime,
-					token: userRecord.uid
-				},
-				userRecord
+					expiresAt: userRecord.user,
+					token: userRecord.user
+					//TODO: devolver bien la data
+				}
 			});
 		})
 		.catch(err => {

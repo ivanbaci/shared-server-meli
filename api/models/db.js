@@ -10,7 +10,8 @@ const sequelize = new Sequelize("meli", "postgres", "root", {
 		min: 0,
 		acquire: 30000,
 		idle: 10000
-	}
+	},
+	logging: false
 });
 
 sequelize
@@ -23,3 +24,13 @@ sequelize
 	});
 
 module.exports = sequelize;
+
+const Server = require("./server");
+const Payment = require("./payment");
+const PaymentMethod = require("./paymentMethod");
+
+Payment.belongsTo(PaymentMethod, { onDelete: "CASCADE" });
+
+sequelize.sync({ force: true }).catch(err => {
+	console.log(err);
+});

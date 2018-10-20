@@ -40,16 +40,13 @@ exports.validateRequest = (req, res, next) => {
 };
 
 exports.saveServer = (req, res) => {
-	Server.sync({ force: false })
-		.then(() => {
-			return Server.create({
-				id: req.body.id,
-				_rev: req.body._rev,
-				createdBy: req.body.createdBy,
-				name: req.body.name,
-				lastConnection: Date.now() //TODO: ver como mantener esto
-			});
-		})
+	Server.create({
+		id: req.body.id,
+		_rev: req.body._rev,
+		createdBy: req.body.createdBy,
+		name: req.body.name,
+		lastConnection: Date.now() //TODO: ver como mantener esto
+	})
 		.then(newServer => {
 			res.status(201).json({
 				metadata: {

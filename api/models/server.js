@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
-const sequelize = require("./db");
+const connection = require("./db");
 
-const Server = sequelize.define("server", {
+const Server = connection.define("server", {
 	id: {
 		type: Sequelize.STRING,
 		primaryKey: true
