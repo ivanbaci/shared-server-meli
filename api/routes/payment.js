@@ -5,7 +5,13 @@ const paymentController = require("../controllers/payment");
 
 router.get("/", paymentController.getAllPayments);
 
-router.post("/", paymentController.createNewPayment);
+router.post(
+	"/",
+	paymentController.validateRequest,
+	paymentController.createNewPayment
+);
+
+router.put("/:id", paymentController.updatePayment);
 
 router.get("/methods", paymentController.getMethods);
 

@@ -3,7 +3,11 @@ var router = express.Router();
 
 const trackingController = require("../controllers/tracking");
 
-router.post("/", trackingController.createNewShipping);
+router.post(
+	"/",
+	trackingController.validateTracking,
+	trackingController.createNewShipping
+);
 
 router.get("/:id", trackingController.getTrackingById);
 

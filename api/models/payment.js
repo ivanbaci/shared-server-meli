@@ -14,6 +14,10 @@ const Payment = connection.define("payment", {
 	value: {
 		type: Sequelize.DOUBLE,
 		allowNull: false
+	},
+	status: {
+		type: Sequelize.STRING,
+		allowNull: false
 	}
 });
 
