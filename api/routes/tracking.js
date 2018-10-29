@@ -11,4 +11,10 @@ router.post(
 
 router.get("/:id", trackingController.getTrackingById);
 
+router.put(
+	"/:id",
+	trackingController.validateTracking,
+	trackingController.updateTracking
+);
+
 module.exports = router;

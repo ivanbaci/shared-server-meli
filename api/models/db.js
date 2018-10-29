@@ -11,7 +11,8 @@ const sequelize = new Sequelize("meli", "postgres", "root", {
 		acquire: 30000,
 		idle: 10000
 	},
-	logging: false
+	logging: false,
+	timezone: "-03:00" //TODO: no funciona bien el timezone
 });
 
 sequelize

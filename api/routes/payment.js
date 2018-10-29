@@ -11,7 +11,11 @@ router.post(
 	paymentController.createNewPayment
 );
 
-router.put("/:id", paymentController.updatePayment);
+router.put(
+	"/:id",
+	paymentController.validateRequest,
+	paymentController.updatePayment
+);
 
 router.get("/methods", paymentController.getMethods);
 

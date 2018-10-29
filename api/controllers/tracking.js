@@ -3,8 +3,7 @@ const Joi = require("joi");
 
 const trackingSchema = Joi.object().keys({
 	id: Joi.string().required(),
-	status: Joi.string().required(),
-	updatedAt: Joi.string().required()
+	status: Joi.string().required()
 });
 
 exports.validateTracking = (req, res, next) => {
@@ -59,4 +58,30 @@ exports.getTrackingById = (req, res) => {
 				message: err.errors.map(e => e.message)
 			});
 		});
+};
+
+exports.updateTracking = (req, res) => {
+	Tracking.update(
+		{ status: req.body.status },
+		{ returning: true, where: { id: req.params.id } }
+	)
+		.then(([rowsUpdate, [updatedTracking]]) => {
+			if (rowsUpdate === 0) {
+				res.status(404).json({
+					code: 0,
+					message: "No existe el recurso solicitado"
+				});
+				return;
+			}
+			res.json({
+				updatedTracking
+			});
+		})
+		.catch(err => {
+			res.status(500).json({
+				code: 0,
+				message: err.errors.map(e => e.message)
+			});
+		});
+	//TODO: manejar error 401
 };

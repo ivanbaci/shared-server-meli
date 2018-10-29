@@ -81,7 +81,6 @@ exports.createNewPayment = (req, res) => {
 };
 
 exports.updatePayment = (req, res) => {
-	//TODO: validate request
 	Payment.update(
 		{ status: req.body.status },
 		{ returning: true, where: { transaction_id: req.params.id } }
@@ -105,7 +104,7 @@ exports.updatePayment = (req, res) => {
 				message: err.errors.map(e => e.message)
 			});
 		});
-	//TODO: manejar error 401 y 409
+	//TODO: manejar error 401
 };
 
 exports.getMethods = (req, res) => {
