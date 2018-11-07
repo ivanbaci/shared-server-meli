@@ -72,7 +72,7 @@ timeDiscountRule = {
 			{
 				fact: "day",
 				operator: "equal",
-				value: "wednesday"
+				value: 3 // miercoles es el dia 3 de la semana, domingo el 0
 			},
 			{
 				fact: "hour",
@@ -140,7 +140,7 @@ timeRechargeRule = {
 			{
 				fact: "day",
 				operator: "equal",
-				value: "friday"
+				value: 6 // viernes es el dia 6 de la semana (arranca en 0 en el domingo)
 			},
 			{
 				fact: "hour",
@@ -177,6 +177,7 @@ highDemandRule = {
 				value: false
 			},
 			{
+				//TODO: ver si son algun estado particular de los viajes o que se hayan creado 10 pedidos
 				fact: "tripsQuantity",
 				operator: "greaterThan",
 				value: 10
@@ -184,7 +185,6 @@ highDemandRule = {
 		]
 	},
 	event: {
-		// define the event to fire when the conditions evaluate truthy
 		type: "highDemandRecharge",
 		params: {
 			discount: 0,
