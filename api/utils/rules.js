@@ -1,53 +1,74 @@
 const RuleEngine = require("json-rules-engine");
 const engine = new RuleEngine.Engine();
 
-const minPriceRule = {
+mailDomainRule = {
 	conditions: {
 		all: [
 			{
-				fact: "price",
-				operator: "lessThan",
-				value: 50
+				fact: "mailDomain",
+				operator: "equal",
+				value: "comprame.com"
 			}
 		]
 	},
 	event: {
 		// define the event to fire when the conditions evaluate truthy
-		type: "minPrice",
+		type: "mailDomainFree",
 		params: {
-			code: 400,
-			message: "El valor de compra minima para el envio es de 50ARS"
+			discount: 100,
+			substract: 0,
+			recharge: 0,
+			message: "El envio es gratis"
 		}
+	},
+	priority: 100, // IMPORTANT!  Set a higher priority so it runs first
+	onSuccess: function(event, almanac) {
+		almanac.addRuntimeFact("free", true);
+	},
+	onFailure: function(event, almanac) {
+		almanac.addRuntimeFact("free", false);
 	}
 };
 
-engine.addRule(minPriceRule);
+engine.addRule(mailDomainRule);
 
-negativeScoreRule = {
+firsPurchaseRule = {
 	conditions: {
 		all: [
 			{
-				fact: "userScore",
-				operator: "lessThan",
+				fact: "free",
+				operator: "equal",
+				value: false
+			},
+			{
+				fact: "purchaseQuantity",
+				operator: "equal",
 				value: 0
 			}
 		]
 	},
 	event: {
 		// define the event to fire when the conditions evaluate truthy
-		type: "userScoreNegative",
+		type: "firstTripDiscount",
 		params: {
-			code: 402,
-			message: "No se le puede hacer envios si tiene puntaje negativo"
+			discount: 0,
+			substract: 100,
+			recharge: 0,
+			message: "El costo se reduce en 100ARS"
 		}
 	}
 };
 
-engine.addRule(negativeScoreRule);
+engine.addRule(firsPurchaseRule);
 
 timeDiscountRule = {
 	conditions: {
 		all: [
+			{
+				fact: "free",
+				operator: "equal",
+				value: false
+			},
 			{
 				fact: "day",
 				operator: "equal",
@@ -69,8 +90,9 @@ timeDiscountRule = {
 		// define the event to fire when the conditions evaluate truthy
 		type: "timeDiscount",
 		params: {
-			code: 200,
-			cost: "-5%",
+			discount: 5,
+			substract: 0,
+			recharge: 0,
 			message: "El costo se reduce un 5%"
 		}
 	}
@@ -78,32 +100,43 @@ timeDiscountRule = {
 
 engine.addRule(timeDiscountRule);
 
-firstTripRule = {
+purchaseQuantityRule = {
 	conditions: {
 		all: [
 			{
-				fact: "firstTrip",
+				fact: "free",
 				operator: "equal",
-				value: true
+				value: false
+			},
+			{
+				fact: "purchaseQuantity",
+				operator: "greaterThanInclusive",
+				value: 10
 			}
 		]
 	},
 	event: {
 		// define the event to fire when the conditions evaluate truthy
-		type: "firstTripDiscount",
+		type: "purchaseQuantityDiscount",
 		params: {
-			code: 200,
-			cost: "-100",
-			message: "El costo se reduce en 100ARS"
+			discount: 5,
+			substract: 0,
+			recharge: 0,
+			message: "El costo se reduce un 5%"
 		}
 	}
 };
 
-engine.addRule(firstTripRule);
+engine.addRule(purchaseQuantityRule);
 
 timeRechargeRule = {
 	conditions: {
 		all: [
+			{
+				fact: "free",
+				operator: "equal",
+				value: false
+			},
 			{
 				fact: "day",
 				operator: "equal",
@@ -125,8 +158,9 @@ timeRechargeRule = {
 		// define the event to fire when the conditions evaluate truthy
 		type: "timeRecharge",
 		params: {
-			code: 200,
-			cost: "10%",
+			discount: 0,
+			substract: 0,
+			recharge: 10,
 			message: "El costo aumenta un 10%"
 		}
 	}
@@ -138,6 +172,11 @@ highDemandRule = {
 	conditions: {
 		all: [
 			{
+				fact: "free",
+				operator: "equal",
+				value: false
+			},
+			{
 				fact: "tripsQuantity",
 				operator: "greaterThan",
 				value: 10
@@ -148,78 +187,14 @@ highDemandRule = {
 		// define the event to fire when the conditions evaluate truthy
 		type: "highDemandRecharge",
 		params: {
-			code: 200,
-			cost: "15%",
+			discount: 0,
+			substract: 0,
+			recharge: 15,
 			message: "El costo aumenta un 15%"
 		}
 	}
 };
 
 engine.addRule(highDemandRule);
-
-mailDomainRule = {
-	conditions: {
-		all: [
-			{
-				fact: "mailDomain",
-				operator: "equal",
-				value: "comprame.com"
-			}
-		]
-	},
-	event: {
-		// define the event to fire when the conditions evaluate truthy
-		type: "mailDomainFree",
-		params: {
-			code: 200,
-			cost: "free",
-			message: "El envio es gratis"
-		}
-	}
-};
-
-engine.addRule(mailDomainRule);
-
-purchaseQuantityRule = {
-	conditions: {
-		all: [
-			{
-				fact: "purchaseQuantity",
-				operator: "greaterThanInclusive",
-				value: 10
-			}
-		]
-	},
-	event: {
-		// define the event to fire when the conditions evaluate truthy
-		type: "purchaseQuantityDiscount",
-		params: {
-			code: 200,
-			cost: "-5%",
-			message: "El costo se reduce un 5%"
-		}
-	}
-};
-
-engine.addRule(purchaseQuantityRule);
-
-let facts = {
-	price: 50,
-	day: "friday",
-	hour: 18,
-	firstTrip: true,
-	tripsQuantity: 15,
-	mailDomain: "comprame.com",
-	userScore: -10,
-	purchaseQuantity: 10
-};
-
-// Run the engine to evaluate
-engine.run(facts).then(events => {
-	// run() returns events with truthy conditions
-	events.map(event =>
-		console.log(event.params.code + " " + event.params.message)
-	);
-});
 
 module.exports = engine;
