@@ -2,8 +2,6 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const passport = require("passport");
-const session = require("express-session");
 
 const tokenRouter = require("./api/routes/token");
 const serverRouter = require("./api/routes/server");
@@ -14,13 +12,6 @@ const trackingRouter = require("./api/routes/tracking");
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-//For passport
-app.use(
-	session({ secret: "keyboard cat", resave: true, saveUninitialized: true })
-);
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use((req, res, next) => {
 	res.header("Access-Control-Allow-Origin", "*");
