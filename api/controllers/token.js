@@ -47,7 +47,6 @@ exports.generateToken = (req, res) => {
 		.auth()
 		.getUserByEmail(req.body.username)
 		.then(userRecord => {
-			console.log(userRecord.user.getIdToken);
 			console.log(userRecord.toJSON());
 			res.status(201).json({
 				metadata: {
@@ -61,6 +60,7 @@ exports.generateToken = (req, res) => {
 			});
 		})
 		.catch(err => {
+			console.log(err);
 			res.status(401).json(err);
 		});
 };

@@ -111,7 +111,7 @@ exports.getMethods = (req, res) => {
 	//TODO: verificar si esto esta bien
 	res.json([
 		{
-			paymentMethod: "efectivo",
+			paymentMethod: "cash",
 			parameters: [
 				{
 					method: "string"
@@ -119,14 +119,26 @@ exports.getMethods = (req, res) => {
 			]
 		},
 		{
-			paymentMethod: "tarjeta",
+			paymentMethod: "card",
 			parameters: [
 				{
 					method: "string",
 					expiration_month: "string",
 					expiration_year: "string",
 					number: "string",
-					type: "string"
+					type: "debit"
+				}
+			]
+		},
+		{
+			paymentMethod: "card",
+			parameters: [
+				{
+					method: "string",
+					expiration_month: "string",
+					expiration_year: "string",
+					number: "string",
+					type: "credit"
 				}
 			]
 		}

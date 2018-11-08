@@ -56,8 +56,6 @@ exports.estimateDeliveries = async (req, res) => {
 		.subtract(30, "minutes")
 		.toDate();
 
-	console.log(limit);
-
 	let cantidad = await Tracking.findAndCountAll({
 		where: {
 			createdAt: {
