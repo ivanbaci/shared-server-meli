@@ -46,8 +46,6 @@ exports.validateRequest = (req, res, next) => {
 };
 
 exports.estimateDeliveries = async (req, res) => {
-	//TODO: error 401
-
 	let mailDomain = req.body.mail.split("@");
 	let today = new Date().getDay();
 	let now = new Date().getHours();

@@ -29,7 +29,6 @@ exports.validateRequest = (req, res, next) => {
 };
 
 exports.getUsers = (req, res) => {
-	//TODO: manejar unauthorized(401)
 	User.findAll()
 		.then(users => {
 			res.json(users);

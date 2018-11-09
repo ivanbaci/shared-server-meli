@@ -2,7 +2,6 @@ const Server = require("../models/server");
 const Joi = require("joi");
 
 exports.getServers = (req, res) => {
-	//TODO: manejar unauthorized(401)
 	Server.findAll()
 		.then(servers => {
 			res.json(servers);
@@ -64,7 +63,6 @@ exports.saveServer = (req, res) => {
 };
 
 exports.getServerById = (req, res) => {
-	//TODO: manejar 401
 	Server.findById(req.params.id)
 		.then(server => {
 			if (!server) {
@@ -111,7 +109,7 @@ exports.updateServer = (req, res) => {
 				message: err.errors.map(e => e.message)
 			});
 		});
-	//TODO: manejar error 401 y 409
+	//TODO: manejar error 409
 };
 
 exports.resetServerToken = (req, res) => {
@@ -136,5 +134,4 @@ exports.deleteServer = (req, res) => {
 				message: err.errors.map(e => e.message)
 			});
 		});
-	//TODO: manejar error 401
 };

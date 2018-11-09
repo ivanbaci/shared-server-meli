@@ -26,6 +26,7 @@ module.exports = {
 			},
 			token: {
 				token: req.token
+				//TODO: expires at
 			}
 		});
 	}

@@ -36,11 +36,9 @@ exports.createNewShipping = (req, res) => {
 				message: err.errors.map(e => e.message)
 			});
 		});
-	//TODO: manejar 401
 };
 
 exports.getTrackingById = (req, res) => {
-	//TODO: manejar 401
 	Tracking.findById(req.params.id)
 		.then(tracking => {
 			if (!tracking) {
@@ -83,5 +81,4 @@ exports.updateTracking = (req, res) => {
 				message: err.errors.map(e => e.message)
 			});
 		});
-	//TODO: manejar error 401
 };

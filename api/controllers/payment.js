@@ -104,7 +104,6 @@ exports.updatePayment = (req, res) => {
 				message: err.errors.map(e => e.message)
 			});
 		});
-	//TODO: manejar error 401
 };
 
 exports.getMethods = (req, res) => {
