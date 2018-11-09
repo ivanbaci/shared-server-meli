@@ -2,16 +2,21 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const passport = require("passport");
+const cors = require("cors");
 
-const tokenRouter = require("./api/routes/token");
-const serverRouter = require("./api/routes/server");
-const paymentRouter = require("./api/routes/payment");
-const deliveryRouter = require("./api/routes/delivery");
-const trackingRouter = require("./api/routes/tracking");
+// Enviroment
+const config = require("./api/config");
+const passportSetup = require("./api/config/passportSetup");
+const routes = require("./api/routes");
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(cors(config.cors)); //TODO:
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use((req, res, next) => {
 	res.header("Access-Control-Allow-Origin", "*");
@@ -30,15 +35,7 @@ app.use((req, res, next) => {
 });
 
 // Routes which should hanlde requests
-app.use("/token", tokenRouter);
-
-app.use("/server", serverRouter);
-
-app.use("/payment", paymentRouter);
-
-app.use("/delivery", deliveryRouter);
-
-app.use("/tracking", trackingRouter);
+routes(app);
 
 // Handle routes that are not supported in the api
 app.use((req, res, next) => {
