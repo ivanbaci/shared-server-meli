@@ -7,8 +7,8 @@
 		"node": "8.11.4"
 	},
 	"scripts": {
-		"start": "node server.js",
-		"test": "mocha --timeout 10000"
+		"start": "nodemon server.js",
+		"test": "mocha --timeout 10000 --exit"
 	},
 	"repository": {
 		"type": "git",
