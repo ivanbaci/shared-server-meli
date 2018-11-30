@@ -104,6 +104,7 @@ exports.updateServer = (req, res) => {
 			});
 		})
 		.catch(err => {
+			console.log(err);
 			res.status(500).json({
 				code: 0,
 				message: err.errors.map(e => e.message)
