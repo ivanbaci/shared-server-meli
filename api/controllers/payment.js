@@ -107,7 +107,6 @@ exports.updatePayment = (req, res) => {
 };
 
 exports.getMethods = (req, res) => {
-	//TODO: verificar si esto esta bien
 	res.json([
 		{
 			paymentMethod: "cash",

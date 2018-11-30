@@ -44,7 +44,7 @@ exports.saveServer = (req, res) => {
 		_rev: req.body._rev,
 		createdBy: req.body.createdBy,
 		name: req.body.name,
-		lastConnection: Date.now() //TODO: ver como mantener esto
+		lastConnection: Date.now()
 	})
 		.then(newServer => {
 			res.status(201).json({
