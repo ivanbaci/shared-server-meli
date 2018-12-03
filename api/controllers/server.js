@@ -39,6 +39,7 @@ exports.validateRequest = (req, res, next) => {
 };
 
 exports.saveServer = (req, res) => {
+	console.log("Server post");
 	Server.create({
 		id: req.body.id,
 		_rev: req.body._rev,
