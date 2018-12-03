@@ -39,6 +39,7 @@ exports.validateRequest = (req, res, next) => {
 };
 
 exports.saveServer = (req, res) => {
+	console.log("Server post");
 	Server.create({
 		id: req.body.id,
 		_rev: req.body._rev,
@@ -104,6 +105,7 @@ exports.updateServer = (req, res) => {
 			});
 		})
 		.catch(err => {
+			console.log(err);
 			res.status(500).json({
 				code: 0,
 				message: err.errors.map(e => e.message)

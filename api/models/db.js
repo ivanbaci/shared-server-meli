@@ -26,7 +26,6 @@ sequelize
 
 module.exports = sequelize;
 
-const Server = require("./server");
 const Payment = require("./payment");
 const PaymentMethod = require("./paymentMethod");
 

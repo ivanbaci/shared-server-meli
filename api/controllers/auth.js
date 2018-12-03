@@ -44,7 +44,9 @@ exports.login = (req, res, next) => {
 				req.body.password &&
 				user.password &&
 				bcrypt.compareSync(req.body.password, user.password);
-			if (!passwordIsValid) return res.status(401, "User Not Authorized");
+			console.log(passwordIsValid);
+			if (!passwordIsValid)
+				return res.status(401).send("Password invalid");
 
 			req.user = user;
 			req.auth = {

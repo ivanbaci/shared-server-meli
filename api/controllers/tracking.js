@@ -25,7 +25,7 @@ exports.createNewShipping = (req, res) => {
 	Tracking.create({
 		id: req.body.id,
 		status: req.body.status,
-		updatedAt: req.body.updatedAt
+		updatedAt: req.body.updatedAt //TODO: ponerle fecha actual
 	})
 		.then(newTracking => {
 			res.status(201).json(newTracking);
@@ -60,7 +60,7 @@ exports.getTrackingById = (req, res) => {
 
 exports.updateTracking = (req, res) => {
 	Tracking.update(
-		{ status: req.body.status },
+		{ status: req.body.status }, //TODO: update de updateAt
 		{ returning: true, where: { id: req.params.id } }
 	)
 		.then(([rowsUpdate, [updatedTracking]]) => {

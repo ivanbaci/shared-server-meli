@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const connection = require("./db");
 
-const User = connection.define("payment", {
+const User = connection.define("user", {
 	id: {
 		autoIncrement: true,
 		primaryKey: true,
