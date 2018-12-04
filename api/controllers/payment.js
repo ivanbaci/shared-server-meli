@@ -2,21 +2,25 @@ const Payment = require("../models/payment");
 const PaymentMethod = require("../models/paymentMethod");
 const Joi = require("joi");
 
-const paymentMethodSchema = Joi.object().keys({
-	method: Joi.string().required(),
-	expiration_month: Joi.string(),
-	expiration_year: Joi.string(),
-	number: Joi.string(),
-	type: Joi.string()
-});
+const paymentMethodSchema = Joi.object()
+	.keys({
+		method: Joi.string().required(),
+		expiration_month: Joi.string().allow(null),
+		expiration_year: Joi.string().allow(null),
+		number: Joi.string().allow(null),
+		type: Joi.string().allow(null)
+	})
+	.unknown(true);
 
-const paymentSchema = Joi.object().keys({
-	transaction_id: Joi.string().required(),
-	currency: Joi.string().required(),
-	value: Joi.number().required(),
-	status: Joi.string().required(),
-	paymentMethod: paymentMethodSchema
-});
+const paymentSchema = Joi.object()
+	.keys({
+		transaction_id: Joi.string().required(),
+		currency: Joi.string().required(),
+		value: Joi.number().required(),
+		status: Joi.string().required(),
+		paymentMethod: paymentMethodSchema
+	})
+	.unknown(true);
 
 exports.validateRequest = (req, res, next) => {
 	paymentSchema

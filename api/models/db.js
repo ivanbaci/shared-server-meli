@@ -1,9 +1,9 @@
 const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize(
-	"d23n0j4eh8pqta",
-	"danuwcbygcvjwf",
-	"6e9b2ee0d2b622e86ee3f7a5cff56a844c844ac3a79315d540da9b2c24ac9c15",
+	"meli",
+	"postgres",
+	"root",
 	{
 		host: "localhost",
 		dialect: "postgres",
@@ -36,6 +36,6 @@ const PaymentMethod = require("./paymentMethod");
 
 Payment.belongsTo(PaymentMethod, { onDelete: "CASCADE" });
 
-sequelize.sync({ force: true }).catch(err => {
+sequelize.sync({ force: false }).catch(err => {
 	console.log(err);
 });

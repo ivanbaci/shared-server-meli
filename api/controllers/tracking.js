@@ -1,10 +1,12 @@
 const Tracking = require("../models/tracking");
 const Joi = require("joi");
 
-const trackingSchema = Joi.object().keys({
-	id: Joi.string().required(),
-	status: Joi.string().required()
-});
+const trackingSchema = Joi.object()
+	.keys({
+		id: Joi.string().required(),
+		status: Joi.string().required()
+	})
+	.unknown(true);
 
 exports.validateTracking = (req, res, next) => {
 	trackingSchema
@@ -17,6 +19,19 @@ exports.validateTracking = (req, res, next) => {
 			res.status(400).json({
 				code: 0,
 				message: errorMessage
+			});
+		});
+};
+
+exports.getAll = (req, res) => {
+	Tracking.findAll()
+		.then(tracking => {
+			res.json(tracking);
+		})
+		.catch(err => {
+			res.status(500).json({
+				code: 0,
+				message: err.errors.map(e => e.message)
 			});
 		});
 };

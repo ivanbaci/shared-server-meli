@@ -3,6 +3,8 @@ var router = express.Router();
 
 const trackingController = require("../controllers/tracking");
 
+router.get("/", trackingController.getAll);
+
 router.post(
 	"/",
 	trackingController.validateTracking,
