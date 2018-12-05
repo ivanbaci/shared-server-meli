@@ -39,7 +39,6 @@ exports.validateRequest = (req, res, next) => {
 };
 
 exports.saveServer = (req, res) => {
-	console.log("Server post");
 	Server.create({
 		id: req.body.id,
 		_rev: req.body._rev,
@@ -56,6 +55,7 @@ exports.saveServer = (req, res) => {
 			});
 		})
 		.catch(err => {
+			console.log(err);
 			res.status(500).json({
 				code: 0,
 				message: err.errors.map(e => e.message)
@@ -111,7 +111,6 @@ exports.updateServer = (req, res) => {
 				message: err.errors.map(e => e.message)
 			});
 		});
-	//TODO: manejar error 409
 };
 
 exports.resetServerToken = (req, res) => {

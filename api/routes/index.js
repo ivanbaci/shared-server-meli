@@ -10,12 +10,12 @@ const trackingRouter = require("./tracking");
 
 // Router
 module.exports = app => {
-	// Auth
-	app.use("/auth", authRouter);
-	app.use("/user", userRouter);
-	//app.use(passport.authenticate("jwt", { session: false }));
-	app.use("/server", serverRouter);
-	app.use("/payment", paymentRouter);
-	app.use("/delivery", deliveryRouter);
-	app.use("/tracking", trackingRouter);
+    // Auth
+    app.use("/auth", authRouter);
+    app.use("/user", userRouter);
+    //app.use(passport.authenticate("jwt", { session: false }));
+    app.use("/server", serverRouter);
+    app.use("/payment", paymentRouter);
+    app.use("/delivery", deliveryRouter);
+    app.use("/tracking", trackingRouter);
 };

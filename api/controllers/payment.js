@@ -5,10 +5,10 @@ const Joi = require("joi");
 const paymentMethodSchema = Joi.object()
 	.keys({
 		method: Joi.string().required(),
-		expiration_month: Joi.string().allow(null),
-		expiration_year: Joi.string().allow(null),
-		number: Joi.string().allow(null),
-		type: Joi.string().allow(null)
+		expiration_month: Joi.string().allow(null).allow(''),
+		expiration_year: Joi.string().allow(null).allow(''),
+		number: Joi.string().allow(null).allow(''),
+		type: Joi.string().allow(null).allow('')
 	})
 	.unknown(true);
 
