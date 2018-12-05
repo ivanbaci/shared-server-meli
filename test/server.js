@@ -8,24 +8,18 @@ let should = chai.should();
 
 chai.use(chaiHttp);
 
-describe("Servers", () => {
-	beforeEach(done => {
-		Server.destroy(
-			{
-				where: {},
-				truncate: true
-			},
-			err => {
-				done();
-			}
-		);
-	});
+before(done => {
+	Server.sync({ force: true }).then(() => done());
 });
 
 describe("/GET server", () => {
-	before(async () => {
-		await Server.sync({ force: true });
+	before(done => {
+		Server.destroy({
+			where: {},
+			truncate: true
+		}).then(() => done());
 	});
+
 	it("it should get all the servers", done => {
 		chai.request(app)
 			.get("/server")
@@ -39,6 +33,18 @@ describe("/GET server", () => {
 });
 
 describe("/GET/:id server", () => {
+	before(done => {
+		console.log("Server: ");
+		console.log(Server);
+		Server.destroy({
+			where: {},
+			truncate: true
+		}).then(() => {
+			console.log("Done destroying");
+			done();
+		});
+	});
+
 	it("it should get a server by the given id", done => {
 		let server = {
 			id: "1412",
@@ -47,6 +53,7 @@ describe("/GET/:id server", () => {
 			name: "prueba",
 			lastConnection: Date.now()
 		};
+
 		Server.create(server).then(() => {
 			chai.request(app)
 				.get("/server/" + server.id)
@@ -65,6 +72,13 @@ describe("/GET/:id server", () => {
 });
 
 describe("/POST server", () => {
+	before(done => {
+		Server.destroy({
+			where: {},
+			truncate: true
+		}).then(() => done());
+	});
+
 	it("it should post a new server with all his fields corrects", done => {
 		let server = {
 			id: "123",
@@ -144,7 +158,11 @@ describe("/POST server", () => {
 });
 
 describe("/PUT server", () => {
-	before(async () => {
+	before(done => {
+		Server.destroy({
+			where: {},
+			truncate: true
+		});
 		let server = {
 			id: "1412",
 			_rev: "21af323fas3",
@@ -152,7 +170,9 @@ describe("/PUT server", () => {
 			name: "prueba",
 			lastConnection: Date.now()
 		};
-		await Server.create(server);
+		Server.create(server).then(newServer => {
+			done();
+		});
 	});
 
 	it("it should put a new server with all his fields corrects", done => {
@@ -231,4 +251,8 @@ describe("/PUT server", () => {
 				done();
 			});
 	});
+});
+
+after(done => {
+	sequelize.close().then(() => done());
 });
