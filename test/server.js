@@ -20,6 +20,10 @@ describe("/GET server", () => {
 		}).then(() => done());
 	});
 
+	beforeEach(done => {
+		Server.sync({ force: true }).then(() => done());
+	});
+
 	it("it should get all the servers", done => {
 		chai.request(app)
 			.get("/server")
@@ -34,15 +38,15 @@ describe("/GET server", () => {
 
 describe("/GET/:id server", () => {
 	before(done => {
-		console.log("Server: ");
-		console.log(Server);
 		Server.destroy({
-			where: {},
 			truncate: true
 		}).then(() => {
-			console.log("Done destroying");
 			done();
 		});
+	});
+
+	beforeEach(done => {
+		Server.sync({ force: true }).then(() => done());
 	});
 
 	it("it should get a server by the given id", done => {
@@ -54,20 +58,29 @@ describe("/GET/:id server", () => {
 			lastConnection: Date.now()
 		};
 
-		Server.create(server).then(() => {
-			chai.request(app)
-				.get("/server/" + server.id)
-				.end((err, res) => {
-					res.should.have.status(200);
-					res.body.should.be.a("object");
-					res.body.should.have.property("_rev");
-					res.body.should.have.property("createdBy");
-					res.body.should.have.property("name");
-					res.body.should.have.property("lastConnection");
-					res.body.should.have.property("id").eql(server.id);
-					done();
-				});
-		});
+		Server.create(server)
+			.then(() => {
+				chai.request(app)
+					.get("/server/" + server.id)
+					.then(res => {
+						res.should.have.status(200);
+						res.body.should.be.a("object");
+						res.body.should.have.property("_rev");
+						res.body.should.have.property("createdBy");
+						res.body.should.have.property("name");
+						res.body.should.have.property("lastConnection");
+						res.body.should.have.property("id").eql(server.id);
+						done();
+					})
+					.catch(err => {
+						console.log(err);
+						done();
+					});
+			})
+			.catch(err => {
+				console.log(err);
+				done();
+			});
 	});
 });
 
@@ -77,6 +90,10 @@ describe("/POST server", () => {
 			where: {},
 			truncate: true
 		}).then(() => done());
+	});
+
+	beforeEach(done => {
+		Server.sync({ force: true }).then(() => done());
 	});
 
 	it("it should post a new server with all his fields corrects", done => {
@@ -175,6 +192,10 @@ describe("/PUT server", () => {
 		});
 	});
 
+	beforeEach(done => {
+		Server.sync({ force: false }).then(() => done());
+	});
+
 	it("it should put a new server with all his fields corrects", done => {
 		let server = {
 			id: "1412",
@@ -248,6 +269,48 @@ describe("/PUT server", () => {
 				res.body.should.have.property("message");
 				res.body.message.should.be.a("array");
 				res.body.message[0].should.eql('"_rev" is required');
+				done();
+			});
+	});
+});
+
+describe("/DELETE/:id server", () => {
+	before(done => {
+		Server.destroy({
+			truncate: true
+		}).then(() => {
+			done();
+		});
+	});
+
+	beforeEach(done => {
+		Server.sync({ force: true }).then(() => done());
+	});
+
+	it("it should delete a server by the given id", done => {
+		let server = {
+			id: "1412",
+			_rev: "21af323fas3",
+			createdBy: "Ivan",
+			name: "prueba",
+			lastConnection: Date.now()
+		};
+
+		Server.create(server)
+			.then(() => {
+				chai.request(app)
+					.delete("/server/" + server.id)
+					.then(res => {
+						res.should.have.status(204);
+						done();
+					})
+					.catch(err => {
+						console.log(err);
+						done();
+					});
+			})
+			.catch(err => {
+				console.log(err);
 				done();
 			});
 	});
