@@ -136,10 +136,13 @@ exports.notifyAppServer = (req, res) => {
         },
         function(error, response, body) {
             console.log(response.statusCode);
+            if (!error) {
+                res.status(200);
+            } else {
+                res.status(500).json(error);
+            }
         }
-    ).then(() => {
-        res.status(200);
-    });
+    );
 };
 
 exports.getMethods = (req, res) => {
