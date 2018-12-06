@@ -118,7 +118,9 @@ exports.updatePayment = (req, res, next) => {
 };
 
 exports.notifyAppServer = (req, res) => {
-    let finalUri = "http://localhost:8000/payments/" + req.body.transaction_id;
+    let finalUri =
+        "http://app-server-meli.herokuapp.com/payments/" +
+        req.body.transaction_id;
     request(
         {
             uri: finalUri,
@@ -126,15 +128,18 @@ exports.notifyAppServer = (req, res) => {
             timeout: 10000,
             followRedirect: true,
             maxRedirects: 10,
-            form: {
+            json: true,
+            body: {
                 status: req.body.status,
-                tracking_id: "1221312"
+                tracking_id: req.body.tracking_id
             }
         },
         function(error, response, body) {
             console.log(response.statusCode);
         }
-    );
+    ).then(() => {
+        res.status(200);
+    });
 };
 
 exports.getMethods = (req, res) => {
