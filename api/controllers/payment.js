@@ -1,6 +1,7 @@
 const Payment = require("../models/payment");
 const PaymentMethod = require("../models/paymentMethod");
 const Joi = require("joi");
+const request = require("request");
 
 const paymentMethodSchema = Joi.object()
     .keys({
@@ -117,46 +118,23 @@ exports.updatePayment = (req, res, next) => {
 };
 
 exports.notifyAppServer = (req, res) => {
-    var http = require("http");
-    let allPath = "/payments/" + req.body.transaction_id;
-
-    requestBody = {
-        status: req.body.status,
-        trackingid: "123"
-    };
-
-    var options = {
-        host: "www.app-server-meli.herokuapp.com",
-        path: allPath,
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
+    let finalUri = "http://localhost:8000/payments/" + req.body.transaction_id;
+    request(
+        {
+            uri: finalUri,
+            method: "PUT",
+            timeout: 10000,
+            followRedirect: true,
+            maxRedirects: 10,
+            form: {
+                status: req.body.status,
+                tracking_id: "1221312"
+            }
         },
-        body: requestBody
-    };
-
-    console.log(options);
-
-    var req = http.request(options, function(res) {
-        console.log("STATUS: " + res.statusCode);
-        // Buffer the body entirely for processing as a whole.
-        var bodyChunks = [];
-        res.on("data", function(chunk) {
-            // You can process streamed parts here...
-            bodyChunks.push(chunk);
-        }).on("end", function() {
-            var body = Buffer.concat(bodyChunks);
-            //console.log("Br pODY: " + body);
-            // ...and/orocess the entire body here.
-            res.json({
-                updatedPayment
-            });
-        });
-    });
-
-    req.on("error", function(e) {
-        console.log("ERROR: " + e.message);
-    });
+        function(error, response, body) {
+            console.log(response.statusCode);
+        }
+    );
 };
 
 exports.getMethods = (req, res) => {
