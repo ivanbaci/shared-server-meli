@@ -136,10 +136,10 @@ exports.notifyAppServer = (req, res) => {
         },
         function(error, response, body) {
             console.log(response.statusCode);
-            if (!error) {
-                res.status(200);
+            if (response.statusCode == 200) {
+                res.status(200).json(body);
             } else {
-                res.status(500).json(error);
+                res.status(500).json(body);
             }
         }
     );

@@ -49,6 +49,6 @@ const PaymentMethod = require("./paymentMethod");
 
 Payment.belongsTo(PaymentMethod, { onDelete: "CASCADE" });
 
-sequelize.sync({ force: true }).catch(err => {
+sequelize.sync({ force: false }).catch(err => {
     console.log(err);
 });
