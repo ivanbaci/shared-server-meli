@@ -1,5 +1,6 @@
 const Tracking = require("../models/tracking");
 const Joi = require("joi");
+const request = require("request");
 
 const trackingSchema = Joi.object()
     .keys({
@@ -108,7 +109,7 @@ exports.notifyAppServer = (req, res) => {
             maxRedirects: 10,
             json: true,
             body: {
-                status: body.status
+                status: req.body.status
             }
         },
         function(error, response, body) {
