@@ -99,7 +99,7 @@ exports.updateTracking = (req, res, next) => {
 
 exports.notifyAppServer = (req, res) => {
     let finalUri =
-        "http://app-server-meli.herokuapp.com/tracking/" + req.body.id;
+        "http://app-server-meli.herokuapp.com/delivery/" + req.body.id;
     request(
         {
             uri: finalUri,
