@@ -1,4 +1,5 @@
-/* let Payment = require("../api/models/payment"); */
+let PaymentMethod = require("../api/models/db");
+let Payment = require("../api/models/payment");
 let sequelize = require("../api/models/db");
 
 let chai = require("chai");
@@ -8,8 +9,10 @@ let should = chai.should();
 
 chai.use(chaiHttp);
 
-/* before(done => {
-    Payment.sync({ force: true }).then(() => done());
+before(done => {
+    PaymentMethod.sync({ force: true }).then(() => {
+        Payment.sync({ force: true }).then(() => done());
+    });
 });
 
 describe("/GET payment", () => {
@@ -87,7 +90,7 @@ describe("/GET/:id payment", () => {
                 done();
             });
     });
-}); */
+});
 /* 
 describe("/POST payment", () => {
 	before(done => {

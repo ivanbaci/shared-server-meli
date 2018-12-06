@@ -7,6 +7,7 @@ const serverRouter = require("./server");
 const paymentRouter = require("./payment");
 const deliveryRouter = require("./delivery");
 const trackingRouter = require("./tracking");
+const statsRouter = require("./stats");
 
 // Router
 module.exports = app => {
@@ -18,4 +19,5 @@ module.exports = app => {
     app.use("/payment", paymentRouter);
     //app.use(passport.authenticate("jwt", { session: false }));
     app.use("/tracking", trackingRouter);
+    app.use("/stats", statsRouter);
 };
